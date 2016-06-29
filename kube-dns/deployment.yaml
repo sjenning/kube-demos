@@ -23,7 +23,8 @@ spec:
       containers:
       - name: kubedns
 # curl -k -s -X GET https://gcr.io/v2/google_containers/kubedns-amd64/tags/list
-        image: gcr.io/google_containers/kubedns-amd64:1.5
+#        image: gcr.io/google_containers/kubedns-amd64:1.5
+        image: master.turbot:5000/kubedns-amd64:1.5
         ports:
         - containerPort: 53
           name: dns

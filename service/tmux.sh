@@ -13,14 +13,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-. $(dirname ${BASH_SOURCE})/util.sh
+. $(dirname ${BASH_SOURCE})/../util.sh
 
-desc "The demos namespace does not exist"
-run "kubectl get namespaces"
+desc "Wait for curl to start"
+run ""
 
-desc "Create a namespace for these demos"
-run "cat $(relative demo-namespace.yaml)"
-run "kubectl apply -f $(relative demo-namespace.yaml)"
+desc "We can scale up"
+run "kubectl scale deployment/demo --replicas=4"
 
-desc "Hey look, a namespace!"
-run "kubectl get namespaces"
+desc "We can scale down"
+run "kubectl scale deployment/demo --replicas=1"
+
+desc "We can scale way down"
+run "kubectl scale deployment/demo --replicas=0"
+
+desc "And back up"
+run "kubectl scale deployment/demo --replicas=2"
+
+desc "Delete the service"
+run "kubectl delete svc demo"
+
+desc "Delete the deployment"
+run "kubectl delete deployment demo"
+

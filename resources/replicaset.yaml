@@ -13,9 +13,6 @@ spec:
         app: demo
     spec:
       containers:
-      - name: busybox
-        image: busybox
-        command:
-        - sh
-        - -c
-        - "trap \"exit 0\" SIGTERM; while true; do echo $(hostname) $(date); sleep 1; done"
+      - name: fedora
+        image: master.turbot:5000/fedora:24-demo
+        imagePullPolicy: Always

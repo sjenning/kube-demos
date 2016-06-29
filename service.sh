@@ -15,11 +15,20 @@
 
 . $(dirname ${BASH_SOURCE})/util.sh
 
-desc "Nuke it all"
-run "kubectl delete namespace demos"
-while kubectl get namespace demos >/dev/null 2>&1; do
-  run "kubectl get namespace demos"
-done
-run "kubectl get namespace demos"
-run "kubectl get namespaces"
-tmux kill-session -t my-session >/dev/null 2>&1
+desc "Deploy an app the just serves the hostname"
+run "kubectl run demo --image=master.turbot:5000/serve-hostname:latest --replicas=2"
+
+desc "Create a service for the app"
+run "cat $(relative resources/svc.yaml)"
+run "kubectl create -f $(relative resources/svc.yaml)"
+
+desc "Thus was conjured a service!"
+run "kubectl get service demo"
+
+desc "Get detailed information about the service"
+run "kubectl describe service demo"
+
+tmux new -d -s my-session \
+    "$(dirname ${BASH_SOURCE})/service/tmux.sh" \; \
+    split-window -v -d "$(dirname $BASH_SOURCE)/service/curl.sh demo.default.svc.kube.turbot" \; \
+    attach \;

@@ -7,3 +7,10 @@ spec:
   - image: master.turbot:5000/fedora:24-demo
     name: fedora
     imagePullPolicy: Always
+    volumeMounts:
+    - mountPath: "/mnt"
+      name: demo
+  volumes:
+    - name: demo
+      persistentVolumeClaim:
+        claimName: demo
