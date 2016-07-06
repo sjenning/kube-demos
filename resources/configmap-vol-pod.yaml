@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo
+spec:
+  containers:
+  - image: master.turbot:5000/fedora:24-demo
+    name: fedora
+    imagePullPolicy: Always
+    command:
+    - /cat.sh
+    - /mnt/database-uri
+    volumeMounts:
+    - name: configmap
+      mountPath: "/mnt"
+      readOnly: true
+  volumes:
+  - name: configmap
+    configMap:
+      name: demo

@@ -15,9 +15,6 @@
 
 . $(dirname ${BASH_SOURCE})/util.sh
 
-DEMO_RUN_FAST=yes
-DEMO_AUTO_RUN=yes
-
 desc "Create a persistent volumes for wordpress and mysql data"
 run "kubectl create -f $(relative resources/wordpress-pvs.yaml)"
 
@@ -47,8 +44,6 @@ run "kubectl create -f $(relative resources/wordpress/deployment.yaml)"
 desc "Create wordpress service w/ NodePort"
 run "cat $(relative resources/wordpress/svc.yaml)"
 run "kubectl create -f $(relative resources/wordpress/svc.yaml)"
-
-unset DEMO_AUTO_RUN
 
 desc "Thus was conjured a wordpress site"
 xdg-open http://node1.turbot:8080 &>/dev/null
