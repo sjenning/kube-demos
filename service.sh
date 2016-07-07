@@ -19,7 +19,7 @@ desc "Deploy an app the just serves the hostname"
 run "kubectl run demo --image=master.turbot:5000/serve-hostname:latest --replicas=2"
 
 desc "Create a service for the app"
-run "cat $(relative resources/svc.yaml)"
+run "cat $(relative resources/svc.yaml)" skip
 run "kubectl create -f $(relative resources/svc.yaml)"
 
 desc "Thus was conjured a service!"

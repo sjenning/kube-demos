@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-. $(dirname ${BASH_SOURCE})/../util.sh
+. $(dirname ${BASH_SOURCE})/util.sh
 
 desc "Wait for curl to start"
 run ""
@@ -31,8 +31,8 @@ desc "And back up"
 run "kubectl scale deployment/demo --replicas=2"
 
 desc "Delete the service"
-run "kubectl delete svc demo"
+run "kubectl delete svc demo" skip
 
 desc "Delete the deployment"
-run "kubectl delete deployment demo"
+run "kubectl delete deployment demo" skip
 

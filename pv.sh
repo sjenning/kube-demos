@@ -15,28 +15,22 @@
 
 . $(dirname ${BASH_SOURCE})/util.sh
 
-desc "The demo persistent volume does not exist"
-run "kubectl get pv demo"
-
 desc "Create a demo persistent volume"
-run "cat $(relative resources/pv.yaml)"
+run "cat $(relative resources/pv.yaml)" skip
 run "kubectl create -f $(relative resources/pv.yaml)"
 
 desc "Thus was conjured a persistent volume!"
 run "kubectl get pv demo"
 
-desc "The demo persistent volume claim does not exist"
-run "kubectl get pvc demo"
-
 desc "Create a demo persistent volume claim"
-run "cat $(relative resources/pvc.yaml)"
+run "cat $(relative resources/pvc.yaml)" skip
 run "kubectl create -f $(relative resources/pvc.yaml)"
 
 desc "Thus was conjured a persistent volume claim!"
 run "kubectl get pvc demo"
 
-desc "Start a pod that mounts the volume"
-run "cat $(relative resources/pvpod.yaml)"
+desc "Create a pod that mounts the volume"
+run "cat $(relative resources/pvpod.yaml)" skip
 run "kubectl create -f $(relative resources/pvpod.yaml)"
 
 desc "Write data to the (alleged) persistent volume"
@@ -51,17 +45,17 @@ run "kubectl delete pod demo"
 desc "Pod is no more"
 run "kubectl get pod demo"
 
-desc "Start a pod that mounts the volume"
+desc "Create a pod that mounts the volume"
 run "kubectl create -f $(relative resources/pvpod.yaml)"
 
 desc "Check data"
 run "kubectl exec -ti demo -- cat /mnt/mydata"
 
 desc "Delete the pod"
-run "kubectl delete pod demo"
+run "kubectl delete pod demo" skip
 
 desc "Delete the persistent volume claim"
-run "kubectl delete pvc demo"
+run "kubectl delete pvc demo" skip
 
 desc "Delete the persistent volume"
-run "kubectl delete pv demo"
+run "kubectl delete pv demo" skip

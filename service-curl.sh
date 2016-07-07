@@ -1,7 +1,5 @@
 #!/bin/bash
 
-. $(dirname ${BASH_SOURCE})/../util.sh
-
 trap "kubectl delete pod demo; exit 0" SIGINT
 
 echo "Create demo pod"

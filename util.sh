@@ -56,7 +56,7 @@ function run() {
     r=$?
     read -d '' -t "${timeout}" -n 10000 # clear stdin
     prompt
-    if [ -z "$DEMO_AUTO_RUN" ]; then
+    if [[ -z "$DEMO_AUTO_RUN" && -z "$2" ]]; then
       read -s -n 4 TRASH
     fi
     DEMO_RUN_STDOUT="$(tail -n +2 $OFILE | sed 's/\r//g')"

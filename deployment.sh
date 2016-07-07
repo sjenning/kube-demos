@@ -15,11 +15,8 @@
 
 . $(dirname ${BASH_SOURCE})/util.sh
 
-desc "The demo deployment does not exist"
-run "kubectl get deployment demo"
-
 desc "Create a demo deployment"
-run "cat $(relative resources/deployment.yaml)"
+run "cat $(relative resources/deployment.yaml)" skip
 run "kubectl create -f $(relative resources/deployment.yaml)"
 
 desc "Thus was conjured a deployment!"
@@ -34,8 +31,9 @@ run "kubectl get pods"
 desc "Pods are v1"
 PODS=$(kubectl get pods --no-headers | cut -f1 -d' ')
 for POD in $PODS; do
-	run "kubectl logs --tail=3 $POD"
+	run "kubectl logs --tail=3 $POD" skip
 done
+run ""
 
 desc "Lets change the pod environment variable to v2"
 desc "can also be done with 'kubectl edit' or 'kubectl apply -f'"
@@ -47,21 +45,20 @@ run "kubectl get replicasets"
 desc "Pods are v2"
 PODS=$(kubectl get pods --no-headers | cut -f1 -d' ')
 for POD in $PODS; do
-	run "kubectl logs --tail=3 $POD"
+	run "kubectl logs --tail=3 $POD" skip
 done
+run ""
 
 desc "Oh no v2 is horrible!"
+run ""
 run "kubectl rollout undo deployment/demo"
 
 desc "Whew, pods are v1 again"
 PODS=$(kubectl get pods --no-headers | cut -f1 -d' ')
 for POD in $PODS; do
-	run "kubectl logs --tail=3 $POD"
+	run "kubectl logs --tail=3 $POD" skip
 done
+run ""
 
 desc "Delete the deployment"
-run "kubectl delete deployment demo"
-
-desc "Conjured deployment is no more"
-run "kubectl get deployment demo"
-
+run "kubectl delete deployment demo" skip

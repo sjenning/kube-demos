@@ -22,34 +22,35 @@ desc "Create a secret for mysql root password"
 run "kubectl create secret generic mysql-pass --from-literal='password=youllneverguess'"
 
 desc "Create mysql persistent volume claims"
-run "cat $(relative resources/mysql/pvc.yaml)"
+run "cat $(relative resources/mysql/pvc.yaml)" skip
 run "kubectl create -f $(relative resources/mysql/pvc.yaml)"
 
 desc "Create mysql deployment"
-run "cat $(relative resources/mysql/deployment.yaml)"
+run "cat $(relative resources/mysql/deployment.yaml)" skip
 run "kubectl create -f $(relative resources/mysql/deployment.yaml)"
 
 desc "Create mysql service"
-run "cat $(relative resources/mysql/svc.yaml)"
+run "cat $(relative resources/mysql/svc.yaml)" skip
 run "kubectl create -f $(relative resources/mysql/svc.yaml)"
 
 desc "Create wordpress persistent volume claim"
-run "cat $(relative resources/wordpress/pvc.yaml)"
+run "cat $(relative resources/wordpress/pvc.yaml)" skip
 run "kubectl create -f $(relative resources/wordpress/pvc.yaml)"
 
 desc "Create wordpress deployment"
-run "cat $(relative resources/wordpress/deployment.yaml)"
+run "cat $(relative resources/wordpress/deployment.yaml)" skip
 run "kubectl create -f $(relative resources/wordpress/deployment.yaml)"
 
 desc "Create wordpress service w/ NodePort"
-run "cat $(relative resources/wordpress/svc.yaml)"
+run "cat $(relative resources/wordpress/svc.yaml)" skip
 run "kubectl create -f $(relative resources/wordpress/svc.yaml)"
 
 desc "Thus was conjured a wordpress site"
 xdg-open http://node1.turbot:8080 &>/dev/null
-run "xdg-open http://node1.turbot:8080"
+run ""
 
 desc "Let's wreck some havok"
+desc ""
 
 desc "Delete the wordpress pod"
 POD=$(kubectl get pods -l tier=frontend -o name)
@@ -69,25 +70,20 @@ desc "Kill all the things!"
 run "kubectl delete deployment --all"
 
 desc "Nevermind"
-DEMO_AUTO_RUN=yes
-run "kubectl create -f $(relative resources/mysql/deployment.yaml)"
-unset DEMO_AUTO_RUN
+run "kubectl create -f $(relative resources/mysql/deployment.yaml)" skip
 run "kubectl create -f $(relative resources/wordpress/deployment.yaml)"
 
 desc "Continue to cleanup the demo"
 run ""
 
 desc "Delete resources"
-DEMO_AUTO_RUN=yes
-run "kubectl delete svc wordpress wordpress-mysql"
-run "kubectl delete deployment --all"
-run "kubectl delete secret mysql-pass"
-run "kubectl delete pvc --all"
-unset DEMO_AUTO_RUN
+run "kubectl delete deployment --all" skip
+run "kubectl delete svc wordpress wordpress-mysql" skip
+run "kubectl delete secret mysql-pass" skip
+run "kubectl delete pvc --all" skip
 desc "Wait for recyclers to finish before proceeding"
 run ""
-DEMO_AUTO_RUN=yes
 desc "For completeness force removal of completed recyclers (if not already removed)"
-run "kubectl delete pods recycler-for-pv01 recycler-for-pv02"
-run "kubectl delete pv --all"
+run "kubectl delete pods recycler-for-pv01 recycler-for-pv02" skip
+run "kubectl delete pv --all" skip
 

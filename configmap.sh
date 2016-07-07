@@ -15,9 +15,6 @@
 
 . $(dirname ${BASH_SOURCE})/util.sh
 
-desc "The demo config map does not exist"
-run "kubectl get configmap demo"
-
 desc "Create a configmap"
 run "kubectl create configmap demo --from-literal='database-uri=http://somewhere.com'"
 
@@ -25,7 +22,7 @@ desc "Thus was conjured a config map"
 run "kubectl get configmap demo"
 
 desc "Create a demo pod that imports the config map as a volume mount"
-run "cat $(relative resources/configmap-vol-pod.yaml)"
+run "cat $(relative resources/configmap-vol-pod.yaml)" skip
 run "kubectl create -f $(relative resources/configmap-vol-pod.yaml)"
 
 tmux new -d -s my-session \

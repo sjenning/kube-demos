@@ -15,10 +15,8 @@
 
 . $(dirname ${BASH_SOURCE})/util.sh
 
-trap "echo 'cleaning up'; kubectl delete deployment demo; echo 'done'; exit 0" SIGINT
-
 desc "Deploy an app"
-run "kubectl run demo --image=master.turbot:5000/serve-hostname:latest --replicas=2"
+run "kubectl run demo --image=master.turbot:5000/fedora:24-demo --replicas=2"
 
 desc "Pod are spread on different nodes"
 run "kubectl get pods -o yaml | grep nodeName:"
@@ -32,13 +30,13 @@ run "kubectl get pods -o yaml | grep nodeName:"
 desc "Uncordon node1"
 run "kubectl uncordon node1.turbot"
 
-desc "Scale down, then back up"
-run "kubectl scale deployments/demo --replicas=0"
+desc "Scale down, then back up (rescheduler in development)"
+run "kubectl scale deployments/demo --replicas=0" skip
 run "kubectl scale deployments/demo --replicas=2"
 
 desc "Pods are spread on different nodes"
 run "kubectl get pods -o yaml | grep nodeName:"
 
 desc "Delete deployment"
-run "kubectl delete deployment demo"
+run "kubectl delete deployment demo" skip
 

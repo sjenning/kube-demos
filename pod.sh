@@ -15,22 +15,15 @@
 
 . $(dirname ${BASH_SOURCE})/util.sh
 
-desc "The demo pod does not exist"
-run "kubectl get pod demo"
-
-desc "Create a busybox demo pod"
-run "cat $(relative resources/pod.yaml)"
+desc "Create a demo pod"
+run "cat $(relative resources/pod.yaml)" skip
 run "kubectl create -f $(relative resources/pod.yaml)"
 
 desc "Thus was conjured a pod!"
 run "kubectl get pod demo"
 
 desc "And it is running"
-run "kubectl logs demo"
+run "kubectl logs --tail=3 demo"
 
 desc "Delete the pod"
-run "kubectl delete pod demo"
-
-desc "Conjured pod is no more"
-run "kubectl get pod demo"
-
+run "kubectl delete pod demo" skip

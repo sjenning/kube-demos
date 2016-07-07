@@ -15,11 +15,8 @@
 
 . $(dirname ${BASH_SOURCE})/util.sh
 
-desc "The demo replicaset does not exist"
-run "kubectl get replicaset demo"
-
 desc "Create a demo replicaset"
-run "cat $(relative resources/replicaset.yaml)"
+run "cat $(relative resources/replicaset.yaml)" skip
 run "kubectl create -f $(relative resources/replicaset.yaml)"
 
 desc "Thus was conjured a replicaset!"
@@ -47,6 +44,5 @@ run "kubectl delete replicaset demo"
 desc "Conjured replicaset is no more"
 run "kubectl get replicaset demo"
 
-desc "Associate pods are also deleted"
-run "kubectl get pods"
-
+desc "Associated pods are also deleted"
+run "kubectl get pods" skip

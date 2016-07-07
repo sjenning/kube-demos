@@ -9,7 +9,7 @@ desc "And it updates in the running pod"
 run ""
 
 desc "Delete the demo pod"
-run "kubectl delete pod demo"
+run "kubectl delete pod demo" skip
 
 desc "Delete the demo configmap"
-run "kubectl delete configmap demo"
+run "kubectl delete configmap demo" skip

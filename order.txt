@@ -1,0 +1,9 @@
+pod
+replicaset
+deployment
+service
+pv
+drain
+secret
+configmap
+wordpress
